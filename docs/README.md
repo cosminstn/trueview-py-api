@@ -1,8 +1,8 @@
 ## Endpoints
 
 ### /scores  **GET**
-***Provides the scores for all registered products.  
-WARNING: Should not be used in production***
+**Provides the scores for all registered products.**  
+***WARNING***: *Should not be used in production*  
 Example response:  
 ```json
 {
@@ -26,8 +26,8 @@ Example response:
 ```
 
 ### /scores/bayes/<ean13>  **GET**
-***Provides bayesian mean for a given UPC. 
-Usually products are registered by the EAN13 code, so that code should be provided.***
+**Provides bayesian mean for a given UPC. 
+Usually products are registered by the EAN13 code, so that code should be provided.**  
 Example response: **/scores/bayes/6921815605577**
 ```json
 {
