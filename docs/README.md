@@ -1,3 +1,42 @@
+## Endpoints
+
+### /scores  **GET**
+***Provides the scores for all registered products.  
+WARNING: Should not be used in production***
+Example response:  
+```json
+{
+    "mean": {
+        "0190198947840": 3.75,
+        "6921815605577": 4.4333333333
+    },
+    "count": {
+        "0190198947840": 2,
+        "6921815605577": 45
+    },
+    "bayes": {
+        "0190198947840": 3.3611111111,
+        "6921815605577": 4.2740384615
+    },
+    "dirichlet": {
+        "0190198947840": 0.0,
+        "6921815605577": 0.0
+    }
+}
+```
+
+### /scores/bayes/<ean13>  **GET**
+***Provides bayesian mean for a given UPC. 
+Usually products are registered by the EAN13 code, so that code should be provided.***
+Example response: **/scores/bayes/6921815605577**
+```json
+{
+  "bayes": 4.274038461538462,
+  "confidence": 7,
+  "prior": 3.25
+}
+```
+
 ### Profanity checking
 ```bash
 pip3 install profanity-check
