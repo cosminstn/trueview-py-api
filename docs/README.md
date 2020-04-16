@@ -15,7 +15,6 @@ Pentru a folosi conexiune de MongoAtlas avem nevoie de **dnspython**
 pip3 install dnspython
 ```
 
-
 ### Customize Flask Server startup
 ```bash
 pip3 install Flask-Script
@@ -25,3 +24,18 @@ pip3 install Flask-Script
 ```
 pip freeze > requirements.txt
 ```
+
+### Build docker image
+```
+docker build -t trueview-py-api:latest .
+```
+
+### Run container for the image
+```
+docker run -d -p 5000:5000 --name trueview-py-api trueview-py-api
+```
+
+
+### Creare run configuration pe baza Dockerfile
+1. Adaugam run configuration de tip Dockerfile
+2. selectam fisierul dockerfile in input-ul respectiv
