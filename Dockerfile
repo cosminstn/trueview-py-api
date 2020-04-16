@@ -33,6 +33,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT ["./app.py"]
+ENTRYPOINT [ "python3" ]
 
-CMD [ "flask", "run", "--host=0.0.0.0" ]
+CMD [ "app.py" ]
