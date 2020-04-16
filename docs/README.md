@@ -78,3 +78,5 @@ docker run -d -p 5000:5000 --name trueview-py-api trueview-py-api
 ### Creare run configuration pe baza Dockerfile
 1. Adaugam run configuration de tip Dockerfile
 2. selectam fisierul dockerfile in input-ul respectiv
+3. Setam container name
+4. Adaugam bind in Bind Ports
