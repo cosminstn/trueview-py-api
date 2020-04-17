@@ -73,7 +73,10 @@ docker build -t trueview-py-api:latest .
 ```
 docker run -d -p 5000:5000 --name trueview-py-api trueview-py-api
 ```
-
+### Push the tagged image
+```
+docker image push cosmyn9708/trueview-py-api
+```
 
 ### Creare run configuration pe baza Dockerfile
 1. Adaugam run configuration de tip Dockerfile
