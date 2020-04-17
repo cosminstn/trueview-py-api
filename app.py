@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, Response
 
 import profanity
-from bson_json import JSONEncoder
 from mongo import MongoEngine
 from stars import Ratings
 
@@ -26,16 +25,6 @@ def prob():
     req = request.get_json()
     txt = req.get('txt')
     return jsonify(profanity.get_profanity(txt, prob=True))
-
-
-# @app.route('/info', methods=['GET'])
-# def get_status():
-#     return jsonify({'db': MongoEngine.get_instance().get_server_info()})
-
-#
-# @app.route('/reviews', methods=['GET'])
-# def get_all_reviews():
-#     return JSONEncoder().encode(MongoEngine.get_instance().get_reviews())
 
 
 @app.route("/scores", methods=['GET'])
@@ -64,6 +53,7 @@ def get_bayes_product_score(upc):
         "prior": prior,
         "confidence": confidence
     }
+    print('determined score: ' + product_score.__str__() + ' for upc: ' + upc)
     return jsonify(response)
 
 
