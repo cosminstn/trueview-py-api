@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pymongo
 import pandas as pd
 
@@ -36,8 +38,57 @@ class MongoEngine:
             reviews.append(rev)
         return reviews
 
-    def get_reviews_data_frame(self):
-        cursor = self._db.Reviews.find({})
-        df = pd.DataFrame(list(cursor))
+    def get_relevant_reviews(self, upc):
+        """
+        For calculating a products score we cannot use all reviews.
+        We must use the reviews for that product, and for the other products in that category.
+        """
+        match_pipeline = {"$match": {
+            "UniversalProductCode": upc
+        }}
 
-        return df
+        product = self._db.Products.find_one({"UniversalProductCode": upc})
+        if product is not None:
+            pprint(product)
+            match_pipeline = {"$match": {
+                "$or": [
+                    {
+                        "UniversalProductCode": upc
+                    },
+                    {
+                        "product.CategoryId": product['CategoryId']
+                    }
+                ]
+            }}
+
+        reviews = self._db.Reviews.aggregate([
+            {
+                "$lookup": {
+                    'from': 'Products',
+                    'localField': 'UniversalProductCode',
+                    'foreignField': 'UniversalProductCode',
+                    'as': 'product'
+                }
+            },
+            {
+                '$unwind': {
+                    'path': '$product',
+                    'preserveNullAndEmptyArrays': True
+                }
+            },
+            match_pipeline,
+            {
+                '$project': {
+                    'Score': 1,
+                    'UniversalProductCode': 1,
+                    '_id': 0
+                }
+            }
+        ])
+        print('Before converting to list: ')
+        pprint(reviews)
+        return list(reviews)
+
+    def get_all_reviews(self):
+        cursor = self._db.Reviews.find({})
+        return list(cursor)

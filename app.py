@@ -1,10 +1,16 @@
+from pprint import pprint
+
 from flask import Flask, request, jsonify, Response
 
 import profanity
+import pandas as pd
 from mongo import MongoEngine
 from stars import Ratings
 
 app = Flask(__name__)
+
+PRIOR = 3.5
+CONFIDENCE = 7
 
 
 @app.route('/profanity/decide', methods=['POST'])
@@ -29,8 +35,8 @@ def prob():
 
 @app.route("/scores", methods=['GET'])
 def get_scores():
-    data_frame = MongoEngine.get_instance().get_reviews_data_frame()
-    ratings = Ratings(data=data_frame, prior=3.25, confidence=7)
+    data_frame = pd.DataFrame(MongoEngine.get_instance().get_all_reviews())
+    ratings = Ratings(data=data_frame, prior=PRIOR, confidence=CONFIDENCE)
     print('Describe')
     print(ratings.describe())
     return Response(response=ratings.get_scores().to_json(),
@@ -43,15 +49,20 @@ def get_bayes_product_score(upc):
     """
     :param upc The universal product code, most likely to be an EAN13 code.
     """
-    data_frame = MongoEngine.get_instance().get_reviews_data_frame()
-    prior = 3.25
-    confidence = 7
-    ratings = Ratings(data=data_frame, prior=prior, confidence=confidence)
+    reviews = MongoEngine.get_instance().get_relevant_reviews(upc)
+    print('Reviews')
+    pprint(reviews)
+    data_frame = pd.DataFrame(reviews)
+    if data_frame.empty:
+        return Response(status=404,mimetype='application/json')
+    print('Data frame')
+    pprint(data_frame)
+    ratings = Ratings(data=data_frame, prior=PRIOR, confidence=CONFIDENCE)
     product_score = ratings.get_product_score(upc)
     response = {
         "bayes": product_score,
-        "prior": prior,
-        "confidence": confidence
+        "prior": PRIOR,
+        "confidence": CONFIDENCE
     }
     print('determined score: ' + product_score.__str__() + ' for upc: ' + upc)
     return jsonify(response)
