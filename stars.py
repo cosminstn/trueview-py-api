@@ -65,16 +65,6 @@ class Ratings(object):
     def get_dirichlet_estimates(self):
         return self.products['Score'].agg(self.dirichlet_mean)
 
-    # def top_movies(self, n=10):
-    #     grid = pd.DataFrame({
-    #         'mean': self.get_means(),
-    #         'count': self.get_counts(),
-    #         'bayes': self.get_bayesian_estimates(),
-    #         'dirichlet': self.get_dirichlet_estimates()
-    #     })
-    #     print(grid)
-    #     return grid.loc[grid['dirichlet'].argsort()[-n:]]
-
     def get_scores(self):
         return pd.DataFrame({
             'mean': self.get_means(),

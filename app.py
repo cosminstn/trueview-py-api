@@ -54,7 +54,7 @@ def get_bayes_product_score(upc):
     pprint(reviews)
     data_frame = pd.DataFrame(reviews)
     if data_frame.empty:
-        return Response(status=404,mimetype='application/json')
+        return Response(status=404, mimetype='application/json')
     print('Data frame')
     pprint(data_frame)
     ratings = Ratings(data=data_frame, prior=PRIOR, confidence=CONFIDENCE)
@@ -69,4 +69,4 @@ def get_bayes_product_score(upc):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='127.0.0.1', port=5003)

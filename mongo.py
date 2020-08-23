@@ -1,7 +1,6 @@
 from pprint import pprint
 
 import pymongo
-import pandas as pd
 
 
 # https://api.mongodb.com/python/current/tutorial.html
@@ -42,7 +41,12 @@ class MongoEngine:
         """
         For calculating a products score we cannot use all reviews.
         We must use the reviews for that product, and for the other products in that category.
+        Products and Reviews have the UniversalProductCode field stored as EAN-13 (13 digits).
         """
+
+        if len(upc) == 12:
+            upc = "0" + upc.strip()
+
         match_pipeline = {"$match": {
             "UniversalProductCode": upc
         }}
@@ -56,7 +60,7 @@ class MongoEngine:
                         "UniversalProductCode": upc
                     },
                     {
-                        "product.CategoryId": product['CategoryId']
+                        "product.Category.ID": product['Category']['ID']
                     }
                 ]
             }}
