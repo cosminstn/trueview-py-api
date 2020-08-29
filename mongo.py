@@ -42,6 +42,8 @@ class MongoEngine:
         For calculating a products score we cannot use all reviews.
         We must use the reviews for that product, and for the other products in that category.
         Products and Reviews have the UniversalProductCode field stored as EAN-13 (13 digits).
+        If there is no product registered with the specified UPC, then we will use just the reviews for that UPC.
+        By doing so, the reviews of products (registered upc's) will have a much accurate score.
         """
 
         if len(upc) == 12:
